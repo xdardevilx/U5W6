@@ -38,19 +38,20 @@ public class DipendenteController {
 
 
     // 4. - PUT http://localhost:3001/dipendente/{id} (+ req.body)
-    @PutMapping("/{authorId}")
+    @PutMapping("/{dipendenteId}")
     public DipendenteDTO findAndUpdate(@PathVariable int dipendenteId, @RequestBody DipendenteDTO body) throws Exception {
         return dipendenteService.findByIdAndUpdate(dipendenteId, body);
     }
 
 
-    // 5. - DELETE http://localhost:3001/dipendente/{id}
+    // 5. - DELETE http://localhost:3001/dipendenti/{id}
 
     @DeleteMapping("/{dipendenteId}")
     @ResponseStatus(HttpStatus.NO_CONTENT) // <-- 204 NO CONTENT
-    public void findAndDelete(@PathVariable int authorId) {
-        dipendenteService.findByIdAndDelete(authorId);
+    public void findAndDelete(@PathVariable int dipendenteId) {
+        dipendenteService.findByIdAndDelete(dipendenteId);
     }
+
 
     // 6. - POST http://localhost:3001/dipendenti/uploadImg/dipendenteId (+ req.body)
 
