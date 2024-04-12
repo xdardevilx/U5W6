@@ -3,6 +3,7 @@ package valerio.U5W6.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -48,8 +49,10 @@ public class DipendenteController {
 
     @DeleteMapping("/{dipendenteId}")
     @ResponseStatus(HttpStatus.NO_CONTENT) // <-- 204 NO CONTENT
-    public void findAndDelete(@PathVariable int dipendenteId) {
+    public ResponseEntity<String> findAndDelete(@PathVariable int dipendenteId) {
+
         dipendenteService.findByIdAndDelete(dipendenteId);
+        return ResponseEntity.ok("Dispositivo eliminato con successo");
     }
 
 
