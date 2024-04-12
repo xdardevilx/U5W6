@@ -40,8 +40,8 @@ public class DispositivoController {
         return dispositivoService.findById(dispositivoId);
     }
 
-    // http://localhost:3001/dispositivi//{dispositivoId}/assing/{dipendenteId}
-    @PostMapping("/{dispositivoId}/assing/{dipendenteId}")
+    // http://localhost:3001/dispositivi//{dispositivoId}/assign/{dipendenteId}
+    @PostMapping("/{dispositivoId}/assign/{dipendenteId}")
     public Dispositivo findAndAssociate(@PathVariable int dispositivoId, @PathVariable int dipendenteId) throws Exception {
             Dispositivo dispositivo = dispositivoService.findById(dispositivoId);
             return dispositivoService.findAndAssociate(dispositivoId, dipendenteId);
