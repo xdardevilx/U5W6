@@ -1,20 +1,29 @@
 package valerio.U5W6.services;
 
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import valerio.U5W6.entity.Dipendente;
+import valerio.U5W6.exceptions.NotFoundException;
 import valerio.U5W6.payloads.DipendenteDTO;
 import valerio.U5W6.repositories.DipendenteDAO;
+
+import java.io.IOException;
 
 @Service
 public class DipendenteService {
 
     @Autowired
     private DipendenteDAO dipendenteDAO;
+
+    @Autowired
+    private Cloudinary progileImg;
 
     public DipendenteDTO save (DipendenteDTO newDipendenteDTO){
         Dipendente newDipendente = new Dipendente(newDipendenteDTO.name(),
@@ -52,6 +61,14 @@ public class DipendenteService {
         this.dipendenteDAO.save(found);
         return body;
 
+    }
+
+    public Dipendente findByIdAndUploadImg(int dipendentiId, MultipartFile img) throws IOException {
+        Dipendente found= this.findById(dipendentiId);
+        String url = (String) progileImg.uploader().upload(img.getBytes(), ObjectUtils.emptyMap()).get("url");
+        found.setProfileImage(url);
+        this.dipendenteDAO.save(found);
+        return found;
     }
 
 
