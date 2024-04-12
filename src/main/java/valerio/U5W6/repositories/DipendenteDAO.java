@@ -5,7 +5,7 @@ import valerio.U5W6.entity.Dipendente;
 
 import java.util.Optional;
 
-public interface DipendentiDAO extends JpaRepository<Dipendente, Long> {
+public interface DipendenteDAO extends JpaRepository<Dipendente, Integer> {
     boolean existsByEmail(String email);
 
     Optional<Dipendente> findByEmail(String email);
