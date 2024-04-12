@@ -53,6 +53,7 @@ public class DipendenteController {
 
         dipendenteService.findByIdAndDelete(dipendenteId);
         return ResponseEntity.ok("Dispositivo eliminato con successo");
+
     }
 
 
