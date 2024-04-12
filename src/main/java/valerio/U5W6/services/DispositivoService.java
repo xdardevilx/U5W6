@@ -6,7 +6,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import valerio.U5W6.entity.Dipendente;
 import valerio.U5W6.entity.Dispositivo;
+import valerio.U5W6.exceptions.NotFoundException;
 import valerio.U5W6.payloads.DispositivoDTO;
 import valerio.U5W6.repositories.DispositivoDAO;
 
@@ -16,8 +18,12 @@ public class DispositivoService {
     @Autowired
     private DispositivoDAO dispositivoDAO;
 
+    @Autowired
+    private DipendenteService dipendenteService;
+
 
     public Page<Dispositivo> getDispositivi(int page, int size, String sortBy) {
+        if(size < 100) size = 100;
         Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
         return dispositivoDAO.findAll(pageable);
     }
@@ -29,5 +35,35 @@ public class DispositivoService {
 
         return newDispositivoDTO;
     }
+
+    public Dispositivo findById(int dispositivoId) {
+        return this.dispositivoDAO.findById(dispositivoId).orElseThrow(() -> new NotFoundException(dispositivoId));
+    }
+
+
+    public void findByIdAndDelete(int id) {
+        Dispositivo found = this.findById(id);
+        this.dispositivoDAO.delete(found);
+    }
+
+    public DispositivoDTO findByIdAndUpdate(int id, DispositivoDTO modifiedDispositivo) {
+        Dispositivo found = this.findById(id);
+        found.setTipologia(modifiedDispositivo.tipologia());
+        found.setStato(modifiedDispositivo.stato());
+
+        return modifiedDispositivo;
+
+    }
+
+    public Dispositivo findAndAssociate(int idDispositivo, int idDipendente) {
+        Dispositivo found = this.findById(idDispositivo);
+        Dipendente foundDipendente = dipendenteService.findById(idDipendente);
+        if(found.getDipendente() != null){
+        throw new NotFoundException("il dispositivo è associato ad un dipendente");
+        }
+        found.setDipendente(foundDipendente);
+        return found;
+    }
+
 
 }
